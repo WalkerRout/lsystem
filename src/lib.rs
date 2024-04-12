@@ -8,25 +8,6 @@ pub trait Alphabet: Hash + Eq {}
 impl<T> Alphabet for T where T: Hash + Eq {}
 
 #[derive(Debug, Default, Clone)]
-pub struct Rules<A> {
-  pub rules: HashMap<A, Vec<A>>,
-}
-
-impl<A> Rules<A>
-  where A: Alphabet {
-  pub fn introduce(&mut self, variable: A, productions: impl Into<Vec<A>>) {
-    self.rules.entry(variable).or_insert_with(|| productions.into());
-  }
-}
-
-impl<A> PartialEq for Rules<A>
-  where A: Alphabet {
-  fn eq(&self, other: &Self) -> bool {
-    self.rules == other.rules
-  }
-}
-
-#[derive(Debug, Default, Clone)]
 pub struct Axiom<A> {
   pub symbols: Vec<A>,
 }
@@ -43,6 +24,25 @@ impl<A> PartialEq for Axiom<A>
   where A: Alphabet {
   fn eq(&self, other: &Self) -> bool {
     self.symbols == other.symbols
+  }
+}
+
+#[derive(Debug, Default, Clone)]
+pub struct Rules<A> {
+  pub rules: HashMap<A, Vec<A>>,
+}
+
+impl<A> Rules<A>
+  where A: Alphabet {
+  pub fn introduce(&mut self, variable: A, productions: impl Into<Vec<A>>) {
+    self.rules.entry(variable).or_insert_with(|| productions.into());
+  }
+}
+
+impl<A> PartialEq for Rules<A>
+  where A: Alphabet {
+  fn eq(&self, other: &Self) -> bool {
+    self.rules == other.rules
   }
 }
 

@@ -3,8 +3,6 @@ use std::mem;
 use std::hash::Hash;
 use std::collections::HashMap;
 
-use rayon::prelude::*;
-
 pub trait Alphabet: Hash + Eq {}
 
 impl<T> Alphabet for T where T: Hash + Eq {}
@@ -70,7 +68,7 @@ impl<A> Iterator for LSystem<A>
 
   fn next(&mut self) -> Option<Vec<A>> {
     self.state = mem::take(&mut self.state)
-      .into_par_iter()
+      .into_iter()
       .flat_map(|k| {
         self.rules.rules.get(&k).cloned().unwrap_or_else(|| vec![k])
       })

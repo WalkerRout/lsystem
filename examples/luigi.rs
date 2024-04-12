@@ -22,7 +22,7 @@ fn parse_luigi(luigi_source: &str) -> LSystem<char> {
 pub fn main() {
   let system = parse_luigi(";a;a;b;b;ab;");
 
-  for (n, ns) in system.enumerate().skip(6).take(1) {
+  for (n, ns) in system.enumerate().skip(15).take(1) {
     println!("{} = {}", n+1, ns.into_iter().collect::<String>());
   }
 }

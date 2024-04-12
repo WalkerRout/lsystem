@@ -1,0 +1,30 @@
+[package]
+name = "lsystem"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "lsystem"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/bin/main.rs"
+
+[dependencies]
+rayon = "1.10.0"
+
+[profile.release]
+opt-level = 3
+lto = true # enable lto
+codegen-units = 1 # increase optimizations
+panic = "abort" # disable stack unwind
+strip = "symbols" # strip bin
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+nursery = { level = "deny", priority = 0 }
+pedantic = { level = "deny", priority = 2 }
+enum_glob_use = { level = "deny", priority = 1 }

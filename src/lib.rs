@@ -89,9 +89,9 @@ impl<A> Iterator for LSystem<A>
 
   fn next(&mut self) -> Option<Vec<A>> {
     self.state = std::mem::take(&mut self.state)
-      .par_iter()
+      .into_par_iter()
       .flat_map(|k| {
-        self.rules.rules.get(k).cloned().unwrap_or_else(|| vec![k.clone()])
+        self.rules.rules.get(&k).cloned().unwrap_or_else(|| vec![k])
       })
       .collect();
     Some(self.state.clone())

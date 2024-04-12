@@ -12,6 +12,6 @@ pub fn main() {
   };
 
   for (n, ns) in system.enumerate().skip(6).take(1) {
-    println!("{n} = {}", ns.into_iter().collect::<String>());
+    println!("{} = {}", n+1, ns.into_iter().collect::<String>());
   }
 }

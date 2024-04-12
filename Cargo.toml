@@ -7,11 +7,14 @@ edition = "2021"
 name = "lsystem"
 path = "src/lib.rs"
 
-[[bin]]
-name = "main"
-path = "src/bin/main.rs"
+[[example]]
+name = "luigi"
+
+[[example]]
+name = "sierpinski"
 
 [dependencies]
+anyhow = "1.0.82"
 rayon = "1.10.0"
 
 [profile.release]

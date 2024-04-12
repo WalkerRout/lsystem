@@ -1,2 +1,2 @@
 # lsystem
-Lindenmayer system expressed as an iterator
+Lindenmayer Systems expressed as Rust iterators

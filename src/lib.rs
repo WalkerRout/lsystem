@@ -75,7 +75,7 @@ impl<A> Iterator for LSystem<A>
         self.rules.rules.get(&k).cloned().unwrap_or_else(|| vec![k])
       })
       .collect();
-    // todo: check if state changed and return None on stable state
+    // never ending iterator; could check if state changed and if not return none
     Some(self.state.clone())
   }
 }

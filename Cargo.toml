@@ -22,10 +22,10 @@ rstest = "0.18.2"
 
 [profile.release]
 opt-level = 3
-lto = true # enable lto
-codegen-units = 1 # increase optimizations
-panic = "abort" # disable stack unwind
-strip = "symbols" # strip bin
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
 
 [lints.rust]
 unsafe_code = "forbid"

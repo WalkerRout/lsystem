@@ -1,9 +1,8 @@
-
-use lsystem::{Axiom, Rules, LSystem};
+use lsystem::{Axiom, LSystem, Rules};
 
 pub fn main() {
   let system = {
-    // rules for 
+    // rules for
     let axiom = Axiom::from(&['A', '-', 'B', '-', 'B'][..]);
     let mut rules = Rules::default();
     rules.introduce('A', ['A', '-', 'B', '+', 'A', '+', 'B', '-', 'A']);
@@ -12,6 +11,6 @@ pub fn main() {
   };
 
   for (n, ns) in system.enumerate().skip(8).take(1) {
-    println!("{} = {}", n+1, ns.into_iter().collect::<String>());
+    println!("{} = {}", n + 1, ns.into_iter().collect::<String>());
   }
 }

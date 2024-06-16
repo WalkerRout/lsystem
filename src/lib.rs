@@ -1,7 +1,6 @@
-
-use std::mem;
-use std::hash::Hash;
 use std::collections::HashMap;
+use std::hash::Hash;
+use std::mem;
 
 pub trait Alphabet: Hash + Eq {}
 
@@ -13,15 +12,21 @@ pub struct Axiom<A> {
 }
 
 impl<A> From<&[A]> for Axiom<A>
-  where A: Alphabet + Clone {
+where
+  A: Alphabet + Clone,
+{
   fn from(l: &[A]) -> Self {
     assert!(!l.is_empty(), "axiom cannot have length 0");
-    Self { symbols: l.to_owned(), }
+    Self {
+      symbols: l.to_owned(),
+    }
   }
 }
 
 impl<A> PartialEq for Axiom<A>
-  where A: Alphabet {
+where
+  A: Alphabet,
+{
   fn eq(&self, other: &Self) -> bool {
     self.symbols == other.symbols
   }
@@ -33,14 +38,21 @@ pub struct Rules<A> {
 }
 
 impl<A> Rules<A>
-  where A: Alphabet {
+where
+  A: Alphabet,
+{
   pub fn introduce(&mut self, variable: A, productions: impl Into<Vec<A>>) {
-    self.rules.entry(variable).or_insert_with(|| productions.into());
+    self
+      .rules
+      .entry(variable)
+      .or_insert_with(|| productions.into());
   }
 }
 
 impl<A> PartialEq for Rules<A>
-  where A: Alphabet {
+where
+  A: Alphabet,
+{
   fn eq(&self, other: &Self) -> bool {
     self.rules == other.rules
   }
@@ -54,24 +66,30 @@ pub struct LSystem<A> {
 }
 
 impl<A> LSystem<A>
-  where A: Alphabet + Clone {
+where
+  A: Alphabet + Clone,
+{
   #[allow(clippy::must_use_candidate)]
   pub fn new(axiom: Axiom<A>, rules: Rules<A>) -> Self {
     let state = axiom.symbols.clone();
-    Self { axiom, rules, state, }
+    Self {
+      axiom,
+      rules,
+      state,
+    }
   }
 }
 
 impl<A> Iterator for LSystem<A>
-  where A: Alphabet + Clone + Send + Sync {
+where
+  A: Alphabet + Clone + Send + Sync,
+{
   type Item = Vec<A>;
 
   fn next(&mut self) -> Option<Vec<A>> {
     self.state = mem::take(&mut self.state)
       .into_iter()
-      .flat_map(|k| {
-        self.rules.rules.get(&k).cloned().unwrap_or_else(|| vec![k])
-      })
+      .flat_map(|k| self.rules.rules.get(&k).cloned().unwrap_or_else(|| vec![k]))
       .collect();
     // never ending iterator; could check if state changed and if not return none
     Some(self.state.clone())
@@ -79,18 +97,18 @@ impl<A> Iterator for LSystem<A>
 }
 
 impl<A> PartialEq for LSystem<A>
-  where A: Alphabet {
+where
+  A: Alphabet,
+{
   fn eq(&self, other: &Self) -> bool {
-    self.state == other.state &&
-    self.axiom == other.axiom &&
-    self.rules == other.rules
+    self.state == other.state && self.axiom == other.axiom && self.rules == other.rules
   }
 }
 
 #[cfg(test)]
 mod tests {
-  use rstest::*;
   use super::*;
+  use rstest::*;
 
   #[fixture]
   fn axiom_char_empty() -> Axiom<char> {
@@ -155,9 +173,7 @@ mod tests {
     #[case(&['a'])]
     #[case(&['a', 'b'])]
     #[case(&['a', 'b', 'c'])]
-    fn from_slice(
-      #[case] slice: &[char],
-    ) {
+    fn from_slice(#[case] slice: &[char]) {
       let axiom = Axiom::from(slice);
       assert_eq!(&axiom.symbols, slice);
     }
